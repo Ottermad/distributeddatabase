@@ -18,5 +18,8 @@ func Init(port string) {
 }
 
 func pingHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "ping")
+	_, err := fmt.Fprint(w, "ping")
+	if err != nil {
+		w.WriteHeader(500)
+	}
 }
