@@ -2,15 +2,24 @@ package database
 
 import (
 	"fmt"
+	"github.com/ottermad/distrbuteddatabase/database/nodes"
 	"net/http"
 )
 
 var ownAddress string = ""
 
-func Init(port string) {
-	ownAddress = "localhost:" + port
+func Init(friendlyName string, port string, nodesFile string) {
+	ownAddress = "http://localhost:" + port
+	nodes.AddOwnNode(friendlyName, ownAddress)
 
+	if nodesFile != "" {
+		nodes.ReadNodesFromFile(nodesFile)
+	}
+
+	nodes.StartGossiping()
 	http.HandleFunc("/ping", pingHandler)
+	http.HandleFunc(nodes.ReceiveGossipPath, nodes.ReceiveGossipHandler)
+
 	err := http.ListenAndServe(":" + port, nil)
 	if err != nil {
 		panic(err)
