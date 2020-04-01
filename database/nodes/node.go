@@ -17,6 +17,10 @@ var ownAddress = ""
 
 var mutex = sync.RWMutex{}
 
+func GetOwnAddress() string {
+	return ownAddress
+}
+
 func AddOwnNode(friendlyName string, address string) {
 	AddNode(friendlyName, address)
 	ownAddress = address
@@ -70,12 +74,8 @@ func sendGossipToNode(address string) {
 func calculateGossip() gossip {
 	g := gossip{
 		Nodes:nodes,
+		PartitionsToNodes: partitions.GetOwnPartitions(),
 	}
-	partitionsToAddress := map[int]partitions.Partition{}
-	for _, partition := range partitions.GetPartitions() {
-		partitionsToAddress[partition.Number] = partition
-	}
-	g.PartitionsToNodes = partitionsToAddress
 	return g
 }
 
@@ -112,6 +112,8 @@ func ReceiveGossipHandler(w http.ResponseWriter, r *http.Request) {
 		nodes[friendlyName] = address
 	}
 	mutex.Unlock()
+
+	partitions.UpdatePartitions(gossipReceived.PartitionsToNodes)
 	return
 }
 
