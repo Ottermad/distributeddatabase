@@ -11,9 +11,10 @@ import (
 
 var ownAddress string = ""
 
-func Init(friendlyName string, port string, nodesFile string) {
+func Init(friendlyName string, port string, nodesFile string, dataDirectory string) {
 	ownAddress = "http://localhost:" + port
 	nodes.AddOwnNode(friendlyName, ownAddress)
+	readwrite.SetDataDirectory(dataDirectory)
 
 	if nodesFile != "" {
 		nodes.ReadNodesFromFile(nodesFile)

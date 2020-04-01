@@ -4,9 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/ottermad/distrbuteddatabase/database/nodes"
+	"github.com/ottermad/distrbuteddatabase/database/partitions"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strconv"
+	"sync"
 )
+
+var dataDirectory = ""
+
+func SetDataDirectory(data string) {
+	dataDirectory = data
+}
+
+var fileMutex = sync.RWMutex{}
 
 const WritePath = "/write_to_partition"
 func PartitionWriteHandler(w http.ResponseWriter, r *http.Request) {
@@ -17,6 +29,33 @@ func PartitionWriteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	dbWrite := &partitionWrite{}
 	err = json.Unmarshal(body, dbWrite)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	// Verify we own the partition
+	if partitions.GetAddressForPartition(dbWrite.Partition) != nodes.GetOwnAddress() {
+		http.Error(w, "Do not own partition", 500)
+	}
+
+	fileMutex.Lock()
+	defer fileMutex.Unlock()
+
+	// Open file if not exists
+	filename := dataDirectory + "/" + strconv.Itoa(dbWrite.Partition) + ".data"
+	contents, err := ioutil.ReadFile(filename)
+	if err != nil {
+		if os.IsNotExist(err) {
+			contents = []byte{}
+		} else {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+	}
+	newEntry := fmt.Sprintf("%s:%s\n", dbWrite.Key, dbWrite.Value)
+	newContents := append(contents, []byte(newEntry)...)
+	err = ioutil.WriteFile(filename, newContents, 0644)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return

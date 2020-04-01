@@ -69,6 +69,7 @@ func CoordinateWrite(w http.ResponseWriter, r *http.Request) {
 }
 
 func calculatePartitions(key string) []int {
+	// TODO: Make sure partitions are different
 	// Generate Hash
 	hash := murmur3.Sum64([]byte(key))
 	numberOfPartitions := uint64(partitions.GetNumberOfPartition())
