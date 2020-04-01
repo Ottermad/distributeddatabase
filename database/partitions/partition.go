@@ -1,12 +1,25 @@
 package partitions
 
+import "sync"
+
 const numberOfPartitions = 1000
 
 type Partition struct {
-	Node string
-	Number int
-	ReadyToAcceptWrites bool
-	ReadyToAcceptReads bool
+	Node string `json:"node"`
+	Number int `json:"number"`
+	ReadyToAcceptWrites bool `json:"ready_to_accept_writes"`
+	ReadyToAcceptReads bool `json:"ready_to_accept_reads"`
+}
+
+var partitions []Partition = []Partition{}
+var partitionsMutex = sync.RWMutex{}
+
+func GetPartitions() []Partition {
+	partitionsMutex.RLock()
+	newList := make([]Partition, len(partitions))
+	copy(newList, partitions)
+	partitionsMutex.RUnlock()
+	return newList
 }
 
 func MapPartitionsToNodes(nodes []string) map[int]Partition {

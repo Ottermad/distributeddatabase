@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/ottermad/distrbuteddatabase/database/partitions"
 	"io/ioutil"
 	"net/http"
 	"sync"
@@ -67,11 +68,20 @@ func sendGossipToNode(address string) {
 }
 
 func calculateGossip() gossip {
-	return gossip{Nodes:nodes}
+	g := gossip{
+		Nodes:nodes,
+	}
+	partitionsToAddress := map[int]partitions.Partition{}
+	for _, partition := range partitions.GetPartitions() {
+		partitionsToAddress[partition.Number] = partition
+	}
+	g.PartitionsToNodes = partitionsToAddress
+	return g
 }
 
 type gossip struct {
 	Nodes map[string]string `json:"nodes"`
+	PartitionsToNodes map[int]partitions.Partition `json:"partitions_to_nodes"`
 }
 
 func (g gossip) getBytes() ([]byte, error) {
