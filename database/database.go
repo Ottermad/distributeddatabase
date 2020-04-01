@@ -27,6 +27,8 @@ func Init(friendlyName string, port string, nodesFile string, dataDirectory stri
 	http.HandleFunc(partitions.ReceiveInitialPartitionsPath, partitions.ReceiveInitialPartitions)
 	http.HandleFunc(readwrite.CoordinateWritePath, readwrite.CoordinateWrite)
 	http.HandleFunc(readwrite.WritePath, readwrite.PartitionWriteHandler)
+	http.HandleFunc(readwrite.CoordinateReadPath, readwrite.CoordinateRead)
+	http.HandleFunc(readwrite.ReadPath, readwrite.PartitionReadHandler)
 
 	err := http.ListenAndServe(":" + port, nil)
 	if err != nil {

@@ -15,6 +15,10 @@ type keyWrite struct {
 	Value string `json:"value"`
 }
 
+type keyRead struct {
+	Key string `json:"key"`
+}
+
 
 const CoordinateWritePath = "/coordinate_write"
 func CoordinateWrite(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +67,93 @@ func CoordinateWrite(w http.ResponseWriter, r *http.Request) {
 	// Report success or failure
 	if successes >= 2 {
 		fmt.Fprint(w, "Sucess")
+	} else {
+		fmt.Fprint(w, "Failed")
+	}
+}
+
+const CoordinateReadPath = "/coordinate_read"
+func CoordinateRead(w http.ResponseWriter, r *http.Request) {
+	// Accept key + value
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	dbRead := &keyRead{}
+	err = json.Unmarshal(body, dbRead)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	// Calculate partitions
+	partitionsForKey := calculatePartitions(dbRead.Key)
+	fmt.Printf("Partitions %v for key %s \n\n", partitionsForKey, dbRead.Key)
+	// Look up which partitions belong to which node
+	successes := 0
+	values := []string{}
+	for _, partition := range partitionsForKey {
+		// Perform keyWrite
+		node := partitions.GetAddressForPartition(partition)
+
+		data, err := partitionRead{
+			Partition: partition,
+			Key:       dbRead.Key,
+		}.getBytes()
+		if err != nil {
+			fmt.Printf("Error %v \n", err)
+			continue
+		}
+
+		rsp, err := http.Post(node + ReadPath, "text/json", bytes.NewBuffer(data))
+		if err != nil {
+			fmt.Printf("Error sending request %v \n", err)
+			continue
+		}
+		defer rsp.Body.Close()
+		body, err := ioutil.ReadAll(rsp.Body)
+		if err != nil {
+			fmt.Printf("Error reading body %v \n", err)
+			continue
+		}
+
+		if rsp.StatusCode > 300 {
+			fmt.Println("Error reading %s", string(body))
+			continue
+		}
+
+
+
+		readReceived := &partitionReadResponse{}
+		fmt.Println(string(body))
+		err = json.Unmarshal(body, readReceived)
+		if err != nil {
+			fmt.Printf("Error unmarshaling body %v \n", err)
+			continue
+		}
+		values = append(values, readReceived.Value)
+
+		successes += 1
+	}
+
+	// Report success or failure
+	if successes >= 2 {
+		valuesToCount := map[string]int{}
+		for _, val := range values {
+			count, _ := valuesToCount[val]
+			count++
+			valuesToCount[val] = count
+		}
+		max := 0
+		val := ""
+		for v, c := range valuesToCount {
+			if c > max {
+				max = c
+				val = v
+			}
+		}
+		fmt.Fprint(w, val)
 	} else {
 		fmt.Fprint(w, "Failed")
 	}
