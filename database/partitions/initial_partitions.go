@@ -78,6 +78,7 @@ func ReceiveInitialPartitions(w http.ResponseWriter, r *http.Request) {
 
 	partitions := map[int]Partition{}
 	for _, num := range initialPartitions.Partitions {
+		num := num
 		partitions[num] = Partition{
 			Node:                nodes.GetOwnAddress(),
 			Number:              num,
@@ -105,7 +106,7 @@ func MapPartitionsToNodes(nodes []string) (map[int]Partition, map[string][]int) 
 
 	partitionToNode := map[int]Partition{}
 
-	for partition := 1; partition <= numberOfPartitions; partition++ {
+	for partition := 0; partition < numberOfPartitions; partition++ {
 		// Cycle through nodes
 		// If node not full add partition
 		filled := false

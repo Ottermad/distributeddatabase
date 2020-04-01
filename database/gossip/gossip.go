@@ -14,7 +14,7 @@ var done = make(chan bool)
 
 func StartGossiping() {
 	fmt.Println("Starting gossiping")
-	ticker := time.NewTicker(time.Second *5)
+	ticker := time.NewTicker(time.Second *2)
 
 	go func() {
 		for {
@@ -36,6 +36,7 @@ func StartGossiping() {
 
 func sendGossipToNode(address string) {
 	gossip := calculateGossip()
+	//fmt.Println(gossip)
 	jsonBytes, err := gossip.getBytes()
 	if err != nil {
 		fmt.Println(err)

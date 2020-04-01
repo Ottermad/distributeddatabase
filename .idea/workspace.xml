@@ -2,14 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="efd0bdfd-9047-404b-b520-189c754da95b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/database/gossip/gossip.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/gossip/receive_gossip.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/partitions/initial_partitions.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/readwrite/coordinate.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/readwrite/write.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/database.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/gossip/gossip.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/gossip/gossip.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/gossip/receive_gossip.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/gossip/receive_gossip.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/nodes/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/nodes/node.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/partitions/initial_partitions.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/partitions/initial_partitions.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/partitions/partition.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/partitions/partition.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/partitions/partition_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/partitions/partition_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/distrbuteddatabase" beforeDir="false" afterPath="$PROJECT_DIR$/distrbuteddatabase" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

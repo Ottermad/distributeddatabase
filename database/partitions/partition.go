@@ -1,11 +1,12 @@
 package partitions
 
 import (
+	"fmt"
 	"github.com/ottermad/distrbuteddatabase/database/nodes"
 	"sync"
 )
 
-const numberOfPartitions = 1000
+const numberOfPartitions = 10
 
 type Partition struct {
 	Node string `json:"node"`
@@ -28,16 +29,20 @@ func GetOwnPartitions() map[int]Partition {
 	return ownPartitionsMap
 }
 
+func GetNumberOfPartition() int {
+	return numberOfPartitions
+}
+
 func UpdatePartitions(newPartitionsMap map[int]Partition) {
 	partitionsMutex.Lock()
 
 	// For each partition
 	for _, partition := range newPartitionsMap {
+		partition := partition
 		oldPartition, existed := partitions[partition.Number]
-
+		//fmt.Printf("setting %d to %v", partition.Number, partition)
 		// Update partition
 		partitions[partition.Number] = &partition
-
 
 		// If already existed update our records
 		if existed {
@@ -67,5 +72,16 @@ func UpdatePartitions(newPartitionsMap map[int]Partition) {
 
 	}
 
+	//fmt.Printf("Set partitions to %v \n\n", partitions)
+
 	partitionsMutex.Unlock()
+}
+
+func GetAddressForPartition(partition int) string {
+	fmt.Println(partitions[partition])
+	partitionsMutex.RLock()
+	fmt.Println(partitions[partition])
+	address := partitions[partition].Node
+	partitionsMutex.RUnlock()
+	return address
 }

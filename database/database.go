@@ -5,6 +5,7 @@ import (
 	"github.com/ottermad/distrbuteddatabase/database/gossip"
 	"github.com/ottermad/distrbuteddatabase/database/nodes"
 	"github.com/ottermad/distrbuteddatabase/database/partitions"
+	"github.com/ottermad/distrbuteddatabase/database/readwrite"
 	"net/http"
 )
 
@@ -23,6 +24,8 @@ func Init(friendlyName string, port string, nodesFile string) {
 	http.HandleFunc(gossip.ReceiveGossipPath, gossip.ReceiveGossipHandler)
 	http.HandleFunc(partitions.DistrubutedInitialPartitionsPath, partitions.CreateAndDistributeInitialPartitions)
 	http.HandleFunc(partitions.ReceiveInitialPartitionsPath, partitions.ReceiveInitialPartitions)
+	http.HandleFunc(readwrite.CoordinateWritePath, readwrite.CoordinateWrite)
+	http.HandleFunc(readwrite.WritePath, readwrite.PartitionWriteHandler)
 
 	err := http.ListenAndServe(":" + port, nil)
 	if err != nil {

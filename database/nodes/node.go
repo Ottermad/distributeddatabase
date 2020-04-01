@@ -55,3 +55,4 @@ func ReadNodesFromFile(path string) {
 		AddNode(friendlyName, address)
 	}
 }
+

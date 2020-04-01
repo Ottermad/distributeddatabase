@@ -22,6 +22,7 @@ func ReceiveGossipHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//fmt.Printf("Received gossp %v \n\n", gossipReceived)
 	// Should this acquire the lock for the whole time?
 	for friendlyName, address := range gossipReceived.Nodes {
 		nodes.AddNode(friendlyName,  address)
