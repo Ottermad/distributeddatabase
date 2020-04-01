@@ -7,15 +7,20 @@ import (
 
 func TestMapNodesToPartitions(t *testing.T) {
 	nodes := []string{"node1", "node2", "node3"}
-	nodesToPartition := MapNodesToPartitions(nodes)
-	require.Len(t, nodesToPartition["node1"], 334)
-	require.Len(t, nodesToPartition["node2"], 333)
-	require.Len(t, nodesToPartition["node3"], 333)
+	partitionsToNodes := MapPartitionsToNodes(nodes)
 
-	total := 0
-	for _, partitions := range nodesToPartition {
-		total += len(partitions)
+	nodesToPartition := map[string]int {
+		"node1": 0,
+		"node2": 0,
+		"node3": 0,
+	}
+	for _, partition := range partitionsToNodes {
+		nodesToPartition[partition.Node] += 1
 	}
 
-	require.Equal(t, total, numberOfPartitions)
+	require.Equal(t, nodesToPartition["node1"], 334)
+	require.Equal(t, nodesToPartition["node2"], 333)
+	require.Equal(t, nodesToPartition["node3"], 333)
+
+	require.Equal(t, len(partitionsToNodes), numberOfPartitions)
 }

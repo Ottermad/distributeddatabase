@@ -2,7 +2,14 @@ package partitions
 
 const numberOfPartitions = 1000
 
-func MapNodesToPartitions(nodes []string) map[string][]int {
+type Partition struct {
+	Node string
+	Number int
+	ReadyToAcceptWrites bool
+	ReadyToAcceptReads bool
+}
+
+func MapPartitionsToNodes(nodes []string) map[int]Partition {
 	numberOfNodes := len(nodes)
 	partitionsPerNode := numberOfPartitions / numberOfNodes // Rounds down
 
@@ -10,6 +17,8 @@ func MapNodesToPartitions(nodes []string) map[string][]int {
 	for _, node := range nodes {
 		nodesToPartition[node] = []int{}
 	}
+
+	partitionToNode := map[int]Partition{}
 
 	for partition := 1; partition <= numberOfPartitions; partition++ {
 		// Cycle through nodes
@@ -21,6 +30,10 @@ func MapNodesToPartitions(nodes []string) map[string][]int {
 			}
 
 			nodesToPartition[node] = append(nodesToPartition[node], partition)
+			partitionToNode[partition] = Partition{
+				Node:                node,
+				Number:              partition,
+			}
 			filled = true
 			break
 		}
@@ -33,10 +46,14 @@ func MapNodesToPartitions(nodes []string) map[string][]int {
 				}
 
 				nodesToPartition[node] = append(nodesToPartition[node], partition)
+				partitionToNode[partition] = Partition{
+					Node:                node,
+					Number:              partition,
+				}
 				break
 			}
 		}
 	}
 
-	return nodesToPartition
+	return partitionToNode
 }
