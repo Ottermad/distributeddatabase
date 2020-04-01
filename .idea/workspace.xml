@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="efd0bdfd-9047-404b-b520-189c754da95b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/database/gossip/gossip.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/gossip/receive_gossip.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/partitions/initial_partitions.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/database.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/nodes/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/nodes/node.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/partitions/partition.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/partitions/partition.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/partitions/partition_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/partitions/partition_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distrbuteddatabase" beforeDir="false" afterPath="$PROJECT_DIR$/distrbuteddatabase" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,8 +40,14 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JSON" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/database/gossip" />
+    </key>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">

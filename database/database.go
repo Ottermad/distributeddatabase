@@ -2,7 +2,9 @@ package database
 
 import (
 	"fmt"
+	"github.com/ottermad/distrbuteddatabase/database/gossip"
 	"github.com/ottermad/distrbuteddatabase/database/nodes"
+	"github.com/ottermad/distrbuteddatabase/database/partitions"
 	"net/http"
 )
 
@@ -16,9 +18,11 @@ func Init(friendlyName string, port string, nodesFile string) {
 		nodes.ReadNodesFromFile(nodesFile)
 	}
 
-	nodes.StartGossiping()
+	gossip.StartGossiping()
 	http.HandleFunc("/ping", pingHandler)
-	http.HandleFunc(nodes.ReceiveGossipPath, nodes.ReceiveGossipHandler)
+	http.HandleFunc(gossip.ReceiveGossipPath, gossip.ReceiveGossipHandler)
+	http.HandleFunc(partitions.DistrubutedInitialPartitionsPath, partitions.CreateAndDistributeInitialPartitions)
+	http.HandleFunc(partitions.ReceiveInitialPartitionsPath, partitions.ReceiveInitialPartitions)
 
 	err := http.ListenAndServe(":" + port, nil)
 	if err != nil {

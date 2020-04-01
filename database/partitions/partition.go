@@ -18,11 +18,11 @@ var ownPartitions = map[int]interface{}{}
 var partitions  = map[int]*Partition{}
 var partitionsMutex = sync.RWMutex{}
 
-func GetOwnPartitions() map[int]*Partition {
+func GetOwnPartitions() map[int]Partition {
 	partitionsMutex.RLock()
-	ownPartitionsMap := map[int]*Partition{}
+	ownPartitionsMap := map[int]Partition{}
 	for partition, _  := range ownPartitions {
-		ownPartitionsMap[partition] = partitions[partition]
+		ownPartitionsMap[partition] = *partitions[partition]
 	}
 	partitionsMutex.RUnlock()
 	return ownPartitionsMap
@@ -68,53 +68,4 @@ func UpdatePartitions(newPartitionsMap map[int]Partition) {
 	}
 
 	partitionsMutex.Unlock()
-}
-
-func MapPartitionsToNodes(nodes []string) map[int]Partition {
-	numberOfNodes := len(nodes)
-	partitionsPerNode := numberOfPartitions / numberOfNodes // Rounds down
-
-	nodesToPartition := map[string][]int{}
-	for _, node := range nodes {
-		nodesToPartition[node] = []int{}
-	}
-
-	partitionToNode := map[int]Partition{}
-
-	for partition := 1; partition <= numberOfPartitions; partition++ {
-		// Cycle through nodes
-		// If node not full add partition
-		filled := false
-		for _, node := range nodes {
-			if (len(nodesToPartition[node])) >= partitionsPerNode {
-				continue
-			}
-
-			nodesToPartition[node] = append(nodesToPartition[node], partition)
-			partitionToNode[partition] = Partition{
-				Node:                node,
-				Number:              partition,
-			}
-			filled = true
-			break
-		}
-
-		if !filled {
-			// If all nodes full then allow adding one extra partition
-			for _, node := range nodes {
-				if (len(nodesToPartition[node])) >= partitionsPerNode+1 {
-					continue
-				}
-
-				nodesToPartition[node] = append(nodesToPartition[node], partition)
-				partitionToNode[partition] = Partition{
-					Node:                node,
-					Number:              partition,
-				}
-				break
-			}
-		}
-	}
-
-	return partitionToNode
 }
