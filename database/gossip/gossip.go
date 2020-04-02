@@ -43,12 +43,11 @@ func sendGossipToNode(address string) {
 		return
 	}
 	rsp, err := http.Post(address +ReceiveGossipPath, "text/json", bytes.NewBuffer(jsonBytes))
-	defer rsp.Body.Close()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
+	defer rsp.Body.Close()
 }
 
 func calculateGossip() gossip {

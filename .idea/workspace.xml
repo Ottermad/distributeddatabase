@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="efd0bdfd-9047-404b-b520-189c754da95b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/database/readwrite/read.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/database.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/readwrite/coordinate.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/readwrite/coordinate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/distrbuteddatabase" beforeDir="false" afterPath="$PROJECT_DIR$/distrbuteddatabase" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node1/0.data" beforeDir="false" afterPath="$PROJECT_DIR$/node1/0.data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node2/4.data" beforeDir="false" afterPath="$PROJECT_DIR$/node2/4.data" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node3/8.data" beforeDir="false" afterPath="$PROJECT_DIR$/node3/8.data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/gossip/gossip.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/gossip/gossip.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
