@@ -3,6 +3,8 @@ package partitions
 import (
 	"fmt"
 	"github.com/ottermad/distrbuteddatabase/database/nodes"
+	"io/ioutil"
+	"net/http"
 	"sync"
 )
 
@@ -18,6 +20,7 @@ type Partition struct {
 var ownPartitions = map[int]interface{}{}
 var partitions  = map[int]*Partition{}
 var partitionsMutex = sync.RWMutex{}
+var versionNumber = 0
 
 func GetOwnPartitions() map[int]Partition {
 	partitionsMutex.RLock()
@@ -73,7 +76,7 @@ func UpdatePartitions(newPartitionsMap map[int]Partition) {
 	}
 
 	//fmt.Printf("Set partitions to %v \n\n", partitions)
-
+	versionNumber += 1
 	partitionsMutex.Unlock()
 }
 
@@ -84,4 +87,16 @@ func GetAddressForPartition(partition int) string {
 	address := partitions[partition].Node
 	partitionsMutex.RUnlock()
 	return address
+}
+
+func writeOwnPartitionsToDisk() {
+	partitionsMutex.RLock()
+	defer partitionsMutex.RUnlock()
+
+
+	err := ioutil.WriteFile(fmt.Sprintf("%d.partitions", versionNumber), newContents, 0644)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 }
